@@ -87,6 +87,7 @@ public enum KeyboardShortcuts {
 			CarbonKeyboardShortcuts.updateEventHandler()
 		}
 	}
+	
 
 	private static func register(_ shortcut: Shortcut) {
 		guard !registeredShortcuts.contains(shortcut) else {
@@ -407,9 +408,16 @@ public enum KeyboardShortcuts {
 
 	private static func handleOnKeyUp(_ shortcut: Shortcut) {
 		guard !isPaused else {
+			
+			let activeView = (NSApp.keyWindow?.firstResponder as? NSTextView)?
+				.superview?
+				.superview
+			
 			NSAlert.showModal(
-				for: nil,
+				for: NSApp.keyWindow,
 				title: "keyboard_shortcut_used_by_other_action".localized)
+			
+			activeView?.focus()
 			return
 		}
 
